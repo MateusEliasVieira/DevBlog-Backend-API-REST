@@ -1,8 +1,10 @@
 package com.mateusdev.blog.domain.model;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,11 +20,15 @@ import jakarta.persistence.OneToMany;
  * da entidade Postagem para representar a chave estrangeira.*/
 
 @Entity
-public class Categoria {
+public class Categoria implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(nullable = false, unique = true)
 	private int id;
+	@Column(nullable = false)
 	private String categoria;
 
 	@OneToMany(mappedBy = "categoria")

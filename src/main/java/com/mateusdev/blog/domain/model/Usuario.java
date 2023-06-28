@@ -1,29 +1,55 @@
 package com.mateusdev.blog.domain.model;
 
-import java.util.Arrays;
+import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 
+/* O UserDetails, irá utilizar nosso Usuario, como uma classe de autenticação. */
+
 @Entity
-public class Usuario {
+public class Usuario implements Serializable, UserDetails {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(nullable = false, unique = true)
 	private int id;
+	@Column(nullable = false)
 	private String nome;
+	@Column(nullable = false, unique = true)
+	private String user;
+	@Column(nullable = false, unique = true)
 	private String email;
+	@Column(nullable = false)
 	private String senha;
+	@Column(nullable = true)
 	private String sobre;
+	@Column(nullable = true)
 	private byte[] fotoUser;
 
+
+	//@OneToMany(mappedBy = "usuario", fetch = FetchType.EAGER)
 	@OneToMany(mappedBy = "usuario")
 	private List<Postagem> postagens;
+
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "TB_USER_ROLE", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private List<Role> roles;
 
 	public int getId() {
 		return id;
@@ -81,27 +107,64 @@ public class Usuario {
 		this.postagens = postagens;
 	}
 
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
+	}
+
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+
+	// Implementação da Interface UserDetails
+
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + Arrays.hashCode(fotoUser);
-		result = prime * result + Objects.hash(email, id, nome, postagens, senha, sobre);
-		return result;
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO Auto-generated method stub
+		return this.roles;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Usuario other = (Usuario) obj;
-		return Objects.equals(email, other.email) && Arrays.equals(fotoUser, other.fotoUser) && id == other.id
-				&& Objects.equals(nome, other.nome) && Objects.equals(postagens, other.postagens)
-				&& Objects.equals(senha, other.senha) && Objects.equals(sobre, other.sobre);
+	public String getPassword() {
+		// TODO Auto-generated method stub
+		return senha;
+	}
+
+	@Override
+	public String getUsername() {
+		// TODO Auto-generated method stub
+		return user;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return true;
 	}
 
 }

@@ -20,7 +20,7 @@ import com.mateusdev.blog.domain.model.Postagem;
 import com.mateusdev.blog.domain.service.PostagemService;
 
 @RestController
-@RequestMapping("/send")
+@RequestMapping("/posts")
 public class PostagemController {
 
 	private ModelMapper modelMapper;
@@ -34,7 +34,7 @@ public class PostagemController {
 	
 	@PostMapping("/new")
 	public ResponseEntity<PostagemOutput> inserirPost(@RequestBody PostagemInput postagemInput) {
-		System.out.println("\n\nEntrou aqui\n\n");
+		System.out.println("entrou para salvar");
 		Postagem postagem = modelMapper.map(postagemInput, Postagem.class);
 		postagem = postagemService.save(postagem);
 		PostagemOutput postagemOutput = modelMapper.map(postagem, PostagemOutput.class);
@@ -44,7 +44,7 @@ public class PostagemController {
 	@GetMapping("/list")
 	public ResponseEntity<List<PostagemOutput>> listarPostagens() {
 		List<PostagemOutput> listPostagemOutput = modelMapper.map(postagemService.findAll(), new TypeToken<List<PostagemOutput>>() {}.getType());
-		return new ResponseEntity<List<PostagemOutput>>(listPostagemOutput, HttpStatus.CREATED);
+		return new ResponseEntity<List<PostagemOutput>>(listPostagemOutput, HttpStatus.OK);
 	}
 	
 }

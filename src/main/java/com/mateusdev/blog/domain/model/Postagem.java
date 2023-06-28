@@ -16,25 +16,29 @@ import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Postagem implements Serializable {
-
+//$2a$10$I2LBOyKGgMdY1YA33/W5Q.rGxv6ms8VM7ZVlLj714d2faIGkJKRzC
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(nullable = false, unique = true)
 	private int id;
 	@Column(nullable = false, name = "titulo", length = 100)
 	private String titulo;
 	@Column(nullable = false, name = "conteudo", length = 1000)
 	private String conteudo;
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	@Column(nullable = false)
 	private Date dataPostagem = new Date();
 
 	@ManyToOne
 	@JoinColumn(name = "categoria_id")
+	//@JoinColumn(name = "id")
 	private Categoria categoria;
 
 	@ManyToOne
 	@JoinColumn(name = "usuario_id")
+	//@JoinColumn(name = "id")
 	private Usuario usuario;
 
 	public int getId() {

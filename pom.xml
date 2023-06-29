@@ -73,7 +73,6 @@
 		    <version>4.4.0</version>
 		</dependency>
 		
-		
 		<!-- https://mvnrepository.com/artifact/org.json/json -->
 		<dependency>
 		    <groupId>org.json</groupId>
@@ -81,7 +80,6 @@
 		    <version>20230618</version>
 		</dependency>
 
-		
 	</dependencies>
 
 	<build>

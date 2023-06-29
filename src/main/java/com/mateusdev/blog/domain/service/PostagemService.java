@@ -6,6 +6,6 @@ import com.mateusdev.blog.domain.model.Postagem;
 
 public interface PostagemService {
 	
-	public Postagem save(Postagem postagem);
+	public Postagem save(Postagem postagem,String categoria);
 	public List<Postagem> findAll();
 }

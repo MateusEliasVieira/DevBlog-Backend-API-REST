@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,7 +17,7 @@ import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Postagem implements Serializable {
-//$2a$10$I2LBOyKGgMdY1YA33/W5Q.rGxv6ms8VM7ZVlLj714d2faIGkJKRzC
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -36,7 +37,7 @@ public class Postagem implements Serializable {
 	//@JoinColumn(name = "id")
 	private Categoria categoria;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER) // carrega o usuario dessa postagem 
 	@JoinColumn(name = "usuario_id")
 	//@JoinColumn(name = "id")
 	private Usuario usuario;

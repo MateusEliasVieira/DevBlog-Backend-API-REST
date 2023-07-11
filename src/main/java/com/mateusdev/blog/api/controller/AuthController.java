@@ -41,19 +41,35 @@ public class AuthController {
 		Authentication authentication = this.authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 		
 		if(authentication != null) {
+			
 			Optional<Usuario> usuario = usuarioService.findByUser(authentication.getName());
-			String token = tokenServiceImpl.gerarTokenJWT(usuario.get());
-			System.out.println("Token gerado = "+token);
 			
-	        JSONObject jsonObject = new JSONObject();
-	        jsonObject.put("token", token);
-	        
-	        String json = jsonObject.toString();
-	        System.out.println(json);
+			if(usuario.isPresent()) {
+				
+				String token = tokenServiceImpl.gerarTokenJWT(usuario.get());
+		        String json = stringToJson("token", token);
+				return new ResponseEntity<String>(json,HttpStatus.ACCEPTED);
 			
-			return new ResponseEntity<String>(json,HttpStatus.ACCEPTED);
+			}else {
+		        String json = stringToJson("token", "Login inválido");		
+			    return new ResponseEntity<String>(json,HttpStatus.UNAUTHORIZED);
+			}
+
 		}
-		
-	    return new ResponseEntity<String>("Login inválido",HttpStatus.UNAUTHORIZED);
+
+        String json = stringToJson("token", "Login inválido");		
+	    return new ResponseEntity<String>(json,HttpStatus.UNAUTHORIZED);
 	}
+	
+	private String stringToJson(String chave, String valor) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put(chave, valor);
+        String json = jsonObject.toString();
+        
+		System.out.println("json gerado = "+json);   
+
+        return json;
+	}
+	
+	
 }

@@ -8,7 +8,7 @@ import com.mateusdev.blog.domain.model.Usuario;
 
 public interface UsuarioService {
 
-	public Usuario save(Usuario usuario);
+	public String save(Usuario usuario);
 	public Optional<Usuario> findByUser(String user);
 	public List<Usuario> listUsers();
 }

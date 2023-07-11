@@ -42,6 +42,7 @@ public class WebSecurityConfig {
         http.authorizeHttpRequests((authz) -> 
                 authz
                 .requestMatchers(HttpMethod.POST,"/login/logar").permitAll() // Permitir acesso público a essa URL
+                .requestMatchers(HttpMethod.POST,"/user/new").permitAll() // Permitir acesso público a essa URL
                 .requestMatchers(HttpMethod.POST,"/new").hasAuthority("USER") // Requerer autenticação com a função USER
                 .requestMatchers(HttpMethod.GET,"/list").hasAuthority("USER") // Requerer autenticação com a função USER
                 .anyRequest().authenticated()); // Todas as outras URLs exigem autenticação
